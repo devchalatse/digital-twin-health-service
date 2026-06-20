@@ -1,11 +1,27 @@
-export class HeartbeatRepository {
-  async save(data: any) {
-    
-    console.log("Saving heartbeat to DB:", data);
+import { pool } from "../database/db";
 
-    return {
-      id: crypto.randomUUID(),
-      ...data,
-    };
+export class HeartbeatRepository {
+  async create(data: any) {
+    const result = await pool.query(
+      `INSERT INTO heartbeats (
+        host_id,
+        cpu_usage,
+        memory_usage,
+        disk_usage,
+        status,
+        timestamp
+      ) VALUES ($1,$2,$3,$4,$5,$6)
+      RETURNING *`,
+      [
+        data.hostId,
+        data.cpuUsage,
+        data.memoryUsage,
+        data.diskUsage,
+        data.status,
+        data.timestamp,
+      ]
+    );
+
+    return result.rows[0];
   }
 }

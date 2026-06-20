@@ -1,10 +1,8 @@
 import { z } from "zod";
 
 export const heartbeatSchema = z.object({
-  hostId: z.string().uuid(),
-  cpuUsage: z.number().min(0).max(100),
-  memoryUsage: z.number().min(0).max(100),
-  diskUsage: z.number().min(0).max(100),
+  hostId: z.string(),
+  cpuUsage: z.coerce.number(),
+  memoryUsage: z.coerce.number(),
+  diskUsage: z.coerce.number(),
 });
-
-export type HeartbeatDTO = z.infer<typeof heartbeatSchema>;

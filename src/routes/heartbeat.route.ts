@@ -1,16 +1,13 @@
-import { Router } from "express";
+import { FastifyInstance } from "fastify";
 import { HeartbeatController } from "../controllers/heartbeat.controller";
 import { HeartbeatService } from "../services/heartbeat.service";
 import { HeartbeatRepository } from "../repositories/heartbeat.repository";
 
-const router = Router();
+export default async function heartbeatRoutes(fastify: FastifyInstance) {
+  const repo = new HeartbeatRepository();
+  const service = new HeartbeatService();
 
-// dependency wiring
-const repo = new HeartbeatRepository();
-// HeartbeatService constructor expects no arguments
-const service = new HeartbeatService();
-const controller = new HeartbeatController(service);
+  const controller = new HeartbeatController(service, repo);
 
-router.post("/", controller.create);
-
-export default router;
+  fastify.post("/heartbeats", controller.create.bind(controller));
+}

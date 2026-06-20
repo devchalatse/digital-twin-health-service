@@ -1,13 +1,17 @@
 import Fastify from "fastify";
+import formbody from "@fastify/formbody";
 import { logger } from "./config/logger";
-import healthRoutes from "./routes/health.route";
+import heartbeatRoutes from "./routes/heartbeat.route";
 
 export function buildApp() {
   const app = Fastify({
-    logger: false,
+    logger: true, // use Fastify built-in structured logs
   });
 
-  // Request logging
+  // Register plugins
+  app.register(formbody);
+
+  // Request logging hook (optional but fine for assignment)
   app.addHook("onRequest", async (request) => {
     logger.info({
       method: request.method,
@@ -16,8 +20,8 @@ export function buildApp() {
     });
   });
 
-  // Register routes
-  app.register(healthRoutes as any, {
+  // Register routes (ONLY heartbeat domain)
+  app.register(heartbeatRoutes, {
     prefix: "/api/v1",
   });
 

@@ -1,11 +1,16 @@
-import { HeartbeatDTO } from "../schemas/heartbeat.schema";
+
+export interface HeartbeatDTO {
+  hostId: string;
+  cpuUsage: number;
+  memoryUsage: number;
+  diskUsage: number;
+}
 
 export type HeartbeatStatus = "healthy" | "degraded" | "down";
 
 export class HeartbeatService {
   calculateStatus(input: HeartbeatDTO): HeartbeatStatus {
-    const avg =
-      (input.cpuUsage + input.memoryUsage + input.diskUsage) / 3;
+    const avg = (input.cpuUsage + input.memoryUsage + input.diskUsage) / 3;
 
     if (avg > 85) return "down";
     if (avg > 65) return "degraded";
