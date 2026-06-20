@@ -17,7 +17,7 @@ export function buildApp() {
   });
 
   // Register routes
-  app.register(healthRoutes, {
+  app.register(healthRoutes as any, {
     prefix: "/api/v1",
   });
 
