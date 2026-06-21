@@ -1,8 +1,14 @@
-import "dotenv/config";
-import { buildApp } from "./app";
+import express from "express";
+import hostsRoute from "./routes/hosts.route";
+import heartbeatsRoute from "./routes/heartbeat.route";
 
-const app = buildApp();
+const app = express();
 
-app.listen({ port: 3000, host: "0.0.0.0" }).then(() => {
-  console.log("Server running on 3000");
+app.use(express.json());
+
+app.use("/api/v1/hosts", hostsRoute);
+app.use("/api/v1/heartbeats", heartbeatsRoute);
+
+app.listen(3000, () => {
+  console.log(" Server running on http://localhost:3000");
 });

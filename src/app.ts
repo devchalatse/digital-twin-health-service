@@ -20,8 +20,7 @@ export function buildApp() {
     });
   });
 
-  // Register routes (ONLY heartbeat domain)
-  app.register(heartbeatRoutes, {
+  app.register(heartbeatRoutes as unknown as any, {
     prefix: "/api/v1",
   });
 
